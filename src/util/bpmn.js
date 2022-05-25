@@ -1,7 +1,7 @@
-function tab(len){
+function tab(len) {
   return [...Array(len)].map(a => " ").join('')
 }
-export function exportXML(json,canvas,createFile = true) {
+export function exportXML(json, canvas, createFile = true) {
   const id = canvas.id || "flow";
   const name = canvas.name || "flow";
   let dataObjs = "";
@@ -22,8 +22,8 @@ export function exportXML(json,canvas,createFile = true) {
   let processXML = `${tab(2)}<process id="${id}" name="${name}">\n`;
   processXML += dataObjs;
   json.nodes.forEach(node => {
-    BPMNShape += `${tab(6)}<bpmndi:BPMNShape bpmnElement="${node.id}" id="BPMNShape_${node.id}">\n`+
-      `${tab(8)}<omgdc:Bounds width="${node.size[0]}" height="${node.size[1]}" x="${node.x}" y="${node.y}"></omgdc:Bounds>\n`+
+    BPMNShape += `${tab(6)}<bpmndi:BPMNShape bpmnElement="${node.id}" id="BPMNShape_${node.id}">\n` +
+      `${tab(8)}<omgdc:Bounds width="${node.size[0]}" height="${node.size[1]}" x="${node.x}" y="${node.y}"></omgdc:Bounds>\n` +
       `${tab(6)}</bpmndi:BPMNShape>\n`;
     switch (node.clazz) {
       case 'start':
@@ -34,12 +34,12 @@ export function exportXML(json,canvas,createFile = true) {
         break;
       case 'userTask': {
         let assignments = "";
-        if(node.assignValue && node.assignValue.length > 0){
-          if(node.assignType === 'person'){
+        if (node.assignValue && node.assignValue.length > 0) {
+          if (node.assignType === 'person') {
             assignments += `flowable:candidateUsers="${node.assignValue.join(',')}"`;
-          }else if(node.assignType === 'assignee'){
+          } else if (node.assignType === 'assignee') {
             assignments += `flowable:assignee="${node.assignValue[0]}"`;
-          }else if(node.assignType === 'persongroup'){
+          } else if (node.assignType === 'persongroup') {
             assignments += `flowable:candidateGroups="${node.assignValue.join(',')}"`;
           }
         }
@@ -48,7 +48,7 @@ export function exportXML(json,canvas,createFile = true) {
       }
       case 'javaTask': {
         let javaClass = "";
-        if(node.javaClass){
+        if (node.javaClass) {
           javaClass = `flowable:class="${node.javaClass}"`;
         }
         processXML += `${tab(4)}<serviceTask id="${node.id}" name="${node.label}" ${javaClass}></serviceTask>\n`;
@@ -56,10 +56,42 @@ export function exportXML(json,canvas,createFile = true) {
       }
       case 'scriptTask': {
         let script = "";
-        if(node.script) {
+        if (node.script) {
           script = `${tab(6)}<script><![CDATA[${node.script}]]></script>\n`;
         }
         processXML += `${tab(4)}<scriptTask id="${node.id}" name="${node.label}">\n${script}${tab(4)}</scriptTask>\n`;
+        break;
+      }
+      case 'nodeTask': {
+        let nodeJs = "";
+        if (node.nodeJs) {
+          nodeJs = `flowable:class="${node.nodeJs}"`;
+        }
+        processXML += `${tab(4)}<nodeTask id="${node.id}" name="${node.label}" ${nodeJs}></nodeTask>\n`;
+        break;
+      }
+      case 'javasTask': {
+        let javasClass = "";
+        if (node.javasClass) {
+          javasClass = `flowable:class="${node.javasClass}"`;
+        }
+        processXML += `${tab(4)}<javasTask id="${node.id}" name="${node.label}" ${javasClass}></javasTask>\n`;
+        break;
+      }
+      case 'androidTask': {
+        let android = "";
+        if (node.android) {
+          android = `flowable:class="${node.android}"`;
+        }
+        processXML += `${tab(4)}<javasTask id="${node.id}" name="${node.label}" ${android}></javasTask>\n`;
+        break;
+      }
+      case 'dockerTask': {
+        let docker = "";
+        if (node.docker) {
+          docker = `flowable:class="${node.docker}"`;
+        }
+        processXML += `${tab(4)}<dockerTask id="${node.id}" name="${node.label}" ${docker}></dockerTask>\n`;
         break;
       }
       case 'receiveTask':
@@ -126,46 +158,46 @@ export function exportXML(json,canvas,createFile = true) {
     }
   });
   json.edges.forEach(edge => {
-    BPMNEdge += `${tab(6)}<bpmndi:BPMNEdge bpmnElement="${edge.source}_${edge.sourceAnchor}-${edge.target}_${edge.targetAnchor}" `+
-      `id="BPMNEdge_${edge.source}_${edge.sourceAnchor}-${edge.target}_${edge.targetAnchor}">\n`+
-        `${tab(8)}<omgdi:waypoint x="${edge.startPoint.x}" y="${edge.startPoint.y}"></omgdi:waypoint>\n`+
-        `${tab(8)}<omgdi:waypoint x="${edge.endPoint.x}" y="${edge.endPoint.y}"></omgdi:waypoint>\n`+
+    BPMNEdge += `${tab(6)}<bpmndi:BPMNEdge bpmnElement="${edge.source}_${edge.sourceAnchor}-${edge.target}_${edge.targetAnchor}" ` +
+      `id="BPMNEdge_${edge.source}_${edge.sourceAnchor}-${edge.target}_${edge.targetAnchor}">\n` +
+      `${tab(8)}<omgdi:waypoint x="${edge.startPoint.x}" y="${edge.startPoint.y}"></omgdi:waypoint>\n` +
+      `${tab(8)}<omgdi:waypoint x="${edge.endPoint.x}" y="${edge.endPoint.y}"></omgdi:waypoint>\n` +
       `${tab(6)}</bpmndi:BPMNEdge>\n`;
     let condition = "";
-    if(edge.conditionExpression){
+    if (edge.conditionExpression) {
       condition = `${tab(6)}<conditionExpression xsi:type="tFormalExpression"><![CDATA[${edge.conditionExpression}]]></conditionExpression>\n`;
     }
     processXML += `${tab(4)}<sequenceFlow id="${edge.source}_${edge.sourceAnchor}-${edge.target}_${edge.targetAnchor}" sourceRef="${edge.source}" targetRef="${edge.target}">${condition}</sequenceFlow>\n`;
   });
   processXML += `${tab(2)}</process>\n`;
 
-  let BPMNDiagram = `${tab(2)}<bpmndi:BPMNDiagram id="BPMNDiagram_${id}">\n`+
-      `${tab(4)}<bpmndi:BPMNPlane bpmnElement="${id}" id="BPMNPlane_${id}">\n${BPMNShape}${BPMNEdge}${tab(4)}</bpmndi:BPMNPlane>\n`+
-      `${tab(2)}</bpmndi:BPMNDiagram>\n`;
+  let BPMNDiagram = `${tab(2)}<bpmndi:BPMNDiagram id="BPMNDiagram_${id}">\n` +
+    `${tab(4)}<bpmndi:BPMNPlane bpmnElement="${id}" id="BPMNPlane_${id}">\n${BPMNShape}${BPMNEdge}${tab(4)}</bpmndi:BPMNPlane>\n` +
+    `${tab(2)}</bpmndi:BPMNDiagram>\n`;
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-  xml += `<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" `+
-    `xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" `+
-    `xmlns:xsd="http://www.w3.org/2001/XMLSchema" `+
-    `xmlns:flowable="http://flowable.org/bpmn" `+
-    `xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" `+
-    `xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" `+
-    `xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" `+
-    `typeLanguage="http://www.w3.org/2001/XMLSchema" `+
-    `expressionLanguage="http://www.w3.org/1999/XPath" `+
+  xml += `<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" ` +
+    `xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ` +
+    `xmlns:xsd="http://www.w3.org/2001/XMLSchema" ` +
+    `xmlns:flowable="http://flowable.org/bpmn" ` +
+    `xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" ` +
+    `xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" ` +
+    `xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" ` +
+    `typeLanguage="http://www.w3.org/2001/XMLSchema" ` +
+    `expressionLanguage="http://www.w3.org/1999/XPath" ` +
     `targetNamespace="http://www.flowable.org/processdef">\n`;
   xml += signals;
   xml += messages;
   xml += processXML;
   xml += BPMNDiagram;
   xml += `</definitions>`;
-  if(createFile) {
+  if (createFile) {
     downloadFile(xml, 'application/xml;charset=utf-8;', `${name}.bpmn20.xml`)
   }
   return xml;
 }
 
-export function exportImg(canvasPanel,filename,createFile = true) {
+export function exportImg(canvasPanel, filename, createFile = true) {
   filename = filename || 'flow'
   let canvas = canvasPanel.querySelector('canvas')
   let context = canvas.getContext('2d')
@@ -189,15 +221,15 @@ export function exportImg(canvasPanel,filename,createFile = true) {
   let c = document.createElement('canvas')
   // 四周空白余量
   let blankWidth = 60
-  c.width = right - left + blankWidth*2
-  c.height = bottom - top + blankWidth*2
+  c.width = right - left + blankWidth * 2
+  c.height = bottom - top + blankWidth * 2
   let ctx = c.getContext('2d')
   // 设置白底
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, c.width, c.height);
-  ctx.drawImage(canvas, left-blankWidth, top-blankWidth, c.width, c.height, 0, 0, c.width, c.height)
+  ctx.drawImage(canvas, left - blankWidth, top - blankWidth, c.width, c.height, 0, 0, c.width, c.height)
   let data = c.toDataURL("image/jpeg")
-  if(createFile) {
+  if (createFile) {
     let parts = data.split(';base64,');
     let contentType = parts[0].split(':')[1];
     let raw = window.atob(parts[1]);

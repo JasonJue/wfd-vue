@@ -18,6 +18,10 @@ export function getShapeName(clazz) {
     case 'messageCatch': return 'message-catch-node';
     case 'signalCatch': return 'signal-catch-node';
     case 'subProcess': return 'sub-process-node';
+    case 'nodeTask': return 'node-task-node';
+    case 'javasTask': return 'javas-task-node';
+    case 'androidTask': return 'android-task-node';
+    case 'dockerTask': return 'docker-task-node';
     default: return 'task-node';
   }
 }

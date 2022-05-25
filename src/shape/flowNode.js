@@ -395,6 +395,62 @@ export default function(G6) {
       }
     }),
   }, 'task-node');
+	G6.registerNode('node-task-node', {
+	  options:  G6.Util.deepMix({},taskDefaultOptions,{
+	    icon: require('../assets/icons/flow/icon_node.svg'),
+	    style: {
+	      fill: '#D5ECB9',
+	      stroke: '#82CD29',
+	    },
+	    stateStyles: {
+	      selected: {
+	        fill: '#D5ECB9',
+	      },
+	    }
+	  }),
+	}, 'task-node');
+	G6.registerNode('javas-task-node', {
+	  options:  G6.Util.deepMix({},taskDefaultOptions,{
+	    icon: require('../assets/icons/flow/icon_javas.svg'),
+	    style: {
+	      fill: '#E8FCFA',
+	      stroke: '#1653AB',
+	    },
+	    stateStyles: {
+	      selected: {
+	        fill: '#C3E0F6',
+	      },
+	    }
+	  }),
+	}, 'task-node');
+	G6.registerNode('android-task-node', {
+	  options:  G6.Util.deepMix({},taskDefaultOptions,{
+	    icon: require('../assets/icons/flow/icon_android.svg'),
+	    style: {
+	      fill: '#AEE9E2',
+	      stroke: '#2FC2B0',
+	    },
+	    stateStyles: {
+	      selected: {
+	        fill: '#7ED7CD',
+	      },
+	    }
+	  }),
+	}, 'task-node');
+	G6.registerNode('docker-task-node', {
+	  options:  G6.Util.deepMix({},taskDefaultOptions,{
+	    icon: require('../assets/icons/flow/icon_docker.svg'),
+	    style: {
+	      fill: '#AEE9E2',
+	      stroke: '#2FC2B0',
+	    },
+	    stateStyles: {
+	      selected: {
+	        fill: '#7ED7CD',
+	      },
+	    }
+	  }),
+	}, 'task-node');
   G6.registerNode('mail-task-node', {
     options:  G6.Util.deepMix({},taskDefaultOptions,{
       icon: require('../assets/icons/flow/icon_mail.svg'),
