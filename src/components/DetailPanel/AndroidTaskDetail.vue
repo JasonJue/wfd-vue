@@ -1,6 +1,6 @@
 <template>
   <div :data-clazz="model.clazz">
-    <div class="panelTitle">{{ i18n["javasTask"] }}</div>
+    <div class="panelTitle">{{ i18n["javaTask"] }}</div>
     <div class="panelBody">
       <BuildDefaultDetail
         :model="model"
@@ -19,7 +19,11 @@
           :disabled="readOnly"
           clearable
           :transfer="true"
-          @on-change="onJDKVersionChange"
+          @input="
+            (value) => {
+              onChange('JDKVersion', value);
+            }
+          "
         >
           <el-option
             v-for="(kv, kvIndex) in this.JDKVersions"
@@ -40,7 +44,11 @@
           :disabled="readOnly"
           clearable
           :transfer="true"
-          @on-change="onMavenVersionChange"
+          @input="
+            (value) => {
+              onChange('MavenVersion', value);
+            }
+          "
         >
           <el-option
             v-for="(kv, kvIndex) in this.MavenVersions"
@@ -61,7 +69,11 @@
           :disabled="readOnly"
           clearable
           :transfer="true"
-          @on-change="onPackageChange"
+          @input="
+            (value) => {
+              onChange('Package', value);
+            }
+          "
         >
           <el-option
             v-for="(kv, kvIndex) in this.Packages"
@@ -71,19 +83,6 @@
           >
           </el-option>
         </el-select>
-      </div>
-      <div class="panelRow">
-        <div>{{ i18n["BuildScript"] }}：</div>
-        <el-input
-          style="width: 90%; font-size: 12px"
-          :disabled="readOnly"
-          :value="model.BuildScript"
-          @input="
-            (value) => {
-              onChange('BuildScript', value);
-            }
-          "
-        />
       </div>
       <div class="panelRow">
         <div>{{ i18n["PackagePath"] }}：</div>

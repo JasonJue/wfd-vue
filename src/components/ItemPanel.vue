@@ -65,11 +65,11 @@
         />
         <div>{{ i18n["nodeTask"] }}</div>
         <img
-          :data-item="javasTaskData"
+          :data-item="javaTaskData"
           :src="require('../assets/flow/javas-task.svg')"
           style="width: 80px; height: 44px"
         />
-        <div>{{ i18n["javasTask"] }}</div>
+        <div>{{ i18n["javaTask"] }}</div>
         <img
           :data-item="androidTaskData"
           :src="require('../assets/flow/android-task.svg')"
@@ -163,19 +163,19 @@ export default {
       nodeTaskData:
         "{clazz:'nodeTask',size:'80*44',label:'" +
         this.i18n["nodeTask"] +
-        "',MachineId: '1', WorkDirectory: '工作目录', NodeVersion: '1',  Package: '1',  BuildScript: 'NodeJS构建脚本',  PackagePath: '包目录'}",
-      javasTaskData:
-        "{clazz:'javasTask',size:'80*44',label:'" +
-        this.i18n["javasTask"] +
-        "',MachineId: '1', WorkDirectory: '工作目录', JDKVersion: '1',  MavenVersion: '1',  Package: '1',  BuildScript: 'Java构建脚本',  PackagePath: '包目录'}",
+        "',MachineId: '1', WorkDirectory: '工作目录', NodeVersion: '1',  Package: '1',  BuildScript: '',  PackagePath: '包目录'}",
+      javaTaskData:
+        "{clazz:'javaTask',size:'80*44',label:'" +
+        this.i18n["javaTask"] +
+        "',MachineId: '1', WorkDirectory: '工作目录', JDKVersion: '1',  MavenVersion: '1',  Package: '1',  BuildScript: '',  PackagePath: '包目录'}",
       androidTaskData:
         "{clazz:'androidTask',size:'120*44',label:'" +
         this.i18n["androidTask"] +
-        "',MachineId: '1', WorkDirectory: '工作目录', JDKVersion: '1',  MavenVersion: '1',  Package: '1',  BuildScript: 'Android构建脚本',  PackagePath: '包目录'}",
+        "',MachineId: '1', WorkDirectory: '工作目录', JDKVersion: '1',  MavenVersion: '1',  Package: '1',  BuildScript: '',  PackagePath: '包目录'}",
       dockerTaskData:
         "{clazz:'dockerTask',size:'80*44',label:'" +
         this.i18n["dockerTask"] +
-        "',MachineId: '1', WorkDirectory: '工作目录', DockerVersion: '1',    Package: '1',  BuildScript: 'Docker构建脚本',  PackagePath: '包目录'}",
+        "',MachineId: '1', WorkDirectory: '工作目录', DockerVersion: '1',    Package: '1',  BuildScript: '',  PackagePath: '包目录'}",
     };
   },
 };

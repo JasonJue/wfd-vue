@@ -14,12 +14,6 @@
       :onChange="onChange"
       :readOnly="readOnly"
     />
-    <JavaTaskDetail
-      v-else-if="model.clazz === 'javaTask'"
-      :model="model"
-      :onChange="onChange"
-      :readOnly="readOnly"
-    />
     <ReceiveTaskDetail
       v-else-if="model.clazz === 'receiveTask'"
       :model="model"
@@ -109,8 +103,8 @@
       :JDKVersions="JDKVersions"
       :AndroidSDKVersions="AndroidSDKVersions"
     />
-    <JavasTaskDetail
-      v-else-if="model.clazz === 'javasTask'"
+    <JavaTaskDetail
+      v-else-if="model.clazz === 'javaTask'"
       :model="model"
       :onChange="onChange"
       :readOnly="readOnly"
@@ -131,7 +125,6 @@
 </template>
 <script>
 import UserTaskDetail from "./UserTaskDetail";
-import JavaTaskDetail from "./JavaTaskDetail";
 import ScriptTaskDetail from "./ScriptTaskDetail";
 import ReceiveTaskDetail from "./ReceiveTaskDetail";
 import MailTaskDetail from "./MailTaskDetail";
@@ -144,7 +137,7 @@ import StartEventDetail from "./StartEventDetail";
 import EndEventDetail from "./EndEventDetail";
 import ProcessDetail from "./ProcessDetail";
 import NodeTaskDetail from "./NodeTaskDetail";
-import JavasTaskDetail from "./JavasTaskDetail";
+import JavaTaskDetail from "./JavaTaskDetail";
 import AndroidTaskDetail from "./AndroidTaskDetail";
 import DockerTaskDetail from "./DockerTaskDetail";
 export default {
@@ -152,7 +145,6 @@ export default {
   components: {
     UserTaskDetail,
     ScriptTaskDetail,
-    JavaTaskDetail,
     ReceiveTaskDetail,
     MailTaskDetail,
     TimerEventDetail,
@@ -164,7 +156,7 @@ export default {
     EndEventDetail,
     ProcessDetail,
     NodeTaskDetail,
-    JavasTaskDetail,
+    JavaTaskDetail,
     AndroidTaskDetail,
     DockerTaskDetail,
   },

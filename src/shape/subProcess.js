@@ -273,6 +273,7 @@ export default function(G6) {
       return style;
     },
     afterUpdate(cfg, node) {
+      console.log("afterUpdate");
       // TODO 因为没有改变 shape 所以不会更新
       const bbox = node.getBBox();
       const group = node.getContainer();

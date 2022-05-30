@@ -1,10 +1,6 @@
 <template>
   <div>
-    <BuildDefaultDetail
-      :model="model"
-      :onChange="onChange"
-      :readOnly="readOnly"
-    />
+    <DefaultDetail :model="model" :onChange="onChange" :readOnly="readOnly" />
     <div class="panelRow">
       <div>{{ i18n["BuildMachine"] }}：</div>
       <el-select
@@ -14,7 +10,11 @@
         :filterable="true"
         :disabled="readOnly"
         clearable
-        @on-change="onMachineChange"
+        @input="
+          (value) => {
+            onChange('MachineId', value);
+          }
+        "
         :transfer="true"
       >
         <el-option
@@ -39,14 +39,38 @@
         "
       />
     </div>
+    <div class="panelRow">
+      <div>{{ i18n["BuildScript"] }}：</div>
+      <AceEditor
+        :fontSize="14"
+        :showPrintMargin="true"
+        :showGutter="true"
+        :highlightActiveLine="true"
+        :value="model.BuildScript"
+        :readOnly="readOnly"
+        v-model="model.BuildScript"
+        width="650px"
+        height="450px"
+        mode="sh"
+        theme="monokai"
+        :onChange="onScriptChange"
+        name="editor2"
+        :editorProps="{ $blockScrolling: true }"
+      />
+    </div>
   </div>
 </template>
 <script>
-import BuildDefaultDetail from "./BuildDefaultDetail";
+import brace from "brace";
+import { Ace as AceEditor } from "vue2-brace-editor";
+import "brace/mode/sh";
+import "brace/theme/monokai";
+import DefaultDetail from "./DefaultDetail";
 export default {
   inject: ["i18n"],
   components: {
-    BuildDefaultDetail,
+    DefaultDetail,
+    AceEditor,
   },
   props: {
     model: {
@@ -76,6 +100,7 @@ export default {
         onChange("MachineId", -1);
       }
     },
+    onScriptChange(newValue) {},
   },
 };
 </script>

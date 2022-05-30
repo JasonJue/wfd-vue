@@ -30,6 +30,13 @@
       "
       >查看流程图</el-button
     >
+
+    <el-button
+      size="small"
+      style="float: right; margin-top: 6px; margin-right: 6px"
+      @click="SaveData"
+      >保存</el-button
+    >
     <wfd-vue
       ref="wfd"
       :data="demoData"
@@ -72,38 +79,6 @@ export default {
     WfdVue,
   },
   props: {
-    isView: {
-      type: Boolean,
-      default: false,
-    },
-    mode: {
-      type: String,
-      default: "edit",
-    },
-    height: {
-      type: Number,
-      default: 800,
-    },
-    lang: {
-      type: String,
-      default: "zh",
-    },
-    data: {
-      type: Object,
-      default: () => ({ nodes: [], edges: [] }),
-    },
-    users: {
-      type: Array,
-      default: () => [],
-    },
-    groups: {
-      type: Array,
-      default: () => [],
-    },
-    categorys: {
-      type: Array,
-      default: () => [],
-    },
     Machines: {
       type: Array,
       default: () => [
@@ -198,8 +173,14 @@ export default {
             id: "taskNode2",
             x: 400,
             y: 200,
-            label: "经理审批",
-            clazz: "scriptTask",
+            label: "Node节点",
+            clazz: "nodeTask",
+            MachineId: "2",
+            WorkDirectory: "工作目录",
+            NodeVersion: "1",
+            Package: "1",
+            BuildScript: "1123123",
+            PackagePath: "包目录",
           },
           {
             id: "gatewayNode",
@@ -312,9 +293,15 @@ export default {
             id: "taskNode2",
             x: 400,
             y: 200,
-            label: "经理审批",
-            clazz: "scriptTask",
+            label: "Node节点",
+            clazz: "nodeTask",
             active: true,
+            MachineId: "1",
+            WorkDirectory: "工作目录",
+            NodeVersion: "1",
+            Package: "1",
+            BuildScript: "1123123",
+            PackagePath: "包目录",
           },
           {
             id: "gatewayNode",
@@ -322,6 +309,7 @@ export default {
             y: 320,
             label: "金额大于1000",
             clazz: "gateway",
+            active: true,
           },
           {
             id: "taskNode3",
@@ -430,6 +418,15 @@ export default {
     };
   },
   mounted() {},
+  methods: {
+    SaveData() {
+      const page = this.$refs["wfd"];
+      var data = page.SaveData();
+      var editData = data;
+      this.demoData1 = editData;
+      this.modalVisible = true;
+    },
+  },
 };
 </script>
 

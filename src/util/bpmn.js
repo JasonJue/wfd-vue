@@ -46,14 +46,6 @@ export function exportXML(json, canvas, createFile = true) {
         processXML += `${tab(4)}<userTask id="${node.id}" name="${node.label}" ${assignments}></userTask>\n`;
         break;
       }
-      case 'javaTask': {
-        let javaClass = "";
-        if (node.javaClass) {
-          javaClass = `flowable:class="${node.javaClass}"`;
-        }
-        processXML += `${tab(4)}<serviceTask id="${node.id}" name="${node.label}" ${javaClass}></serviceTask>\n`;
-        break;
-      }
       case 'scriptTask': {
         let script = "";
         if (node.script) {
@@ -70,12 +62,20 @@ export function exportXML(json, canvas, createFile = true) {
         processXML += `${tab(4)}<nodeTask id="${node.id}" name="${node.label}" ${nodeJs}></nodeTask>\n`;
         break;
       }
-      case 'javasTask': {
-        let javasClass = "";
-        if (node.javasClass) {
-          javasClass = `flowable:class="${node.javasClass}"`;
+      // case 'javaTask': {
+      //   let javaClass = "";
+      //   if (node.javaClass) {
+      //     javaClass = `flowable:class="${node.javaClass}"`;
+      //   }
+      //   processXML += `${tab(4)}<serviceTask id="${node.id}" name="${node.label}" ${javaClass}></serviceTask>\n`;
+      //   break;
+      // }
+      case 'javaTask': {
+        let javasjavaClassClass = "";
+        if (node.javaClass) {
+          javaClass = `flowable:class="${node.javaClass}"`;
         }
-        processXML += `${tab(4)}<javasTask id="${node.id}" name="${node.label}" ${javasClass}></javasTask>\n`;
+        processXML += `${tab(4)}<javaTask id="${node.id}" name="${node.label}" ${javaClass}></javaTask>\n`;
         break;
       }
       case 'androidTask': {
@@ -83,7 +83,7 @@ export function exportXML(json, canvas, createFile = true) {
         if (node.android) {
           android = `flowable:class="${node.android}"`;
         }
-        processXML += `${tab(4)}<javasTask id="${node.id}" name="${node.label}" ${android}></javasTask>\n`;
+        processXML += `${tab(4)}<androidTask id="${node.id}" name="${node.label}" ${android}></androidTask>\n`;
         break;
       }
       case 'dockerTask': {

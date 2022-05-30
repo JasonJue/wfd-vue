@@ -409,7 +409,7 @@ export default function(G6) {
 	    }
 	  }),
 	}, 'task-node');
-	G6.registerNode('javas-task-node', {
+	G6.registerNode('java-task-node', {
 	  options:  G6.Util.deepMix({},taskDefaultOptions,{
 	    icon: require('../assets/icons/flow/icon_javas.svg'),
 	    style: {

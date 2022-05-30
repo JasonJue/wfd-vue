@@ -180,6 +180,7 @@ export default {
     },
     initEvents() {
       this.graph.on("afteritemselected", (items) => {
+        console.log("afteritemselected");
         if (items && items.length > 0) {
           let item = this.graph.findById(items[0]);
           if (!item) {
@@ -216,11 +217,8 @@ export default {
           this.graph.updateItem(item, { [key]: value });
         }
         this.selectedModel = { ...item.getModel() };
-        console.log(selectedModel);
       } else {
         const canvasModel = { ...this.processModel, [key]: value };
-        console.log(canvasModel);
-        console.log(canvasModel);
         this.selectedModel = canvasModel;
         this.processModel = canvasModel;
       }
@@ -246,6 +244,16 @@ export default {
         return group.getItem(subProcess, itemId);
       }
       return null;
+    },
+    SaveData() {
+      console.log("saveData");
+      var data = this.graph.save();
+      var shapeData = this.initShape(data);
+      this.graph.changeData(shapeData);
+      this.graph.setMode(this.mode);
+      //this.graph.emit("canvas:click");
+      console.log("data:" + data);
+      return data;
     },
   },
   destroyed() {

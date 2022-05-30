@@ -19,7 +19,11 @@
           :disabled="readOnly"
           clearable
           :transfer="true"
-          @on-change="onNodeVersionChange"
+          @input="
+            (value) => {
+              onChange('NodeVersion', value);
+            }
+          "
         >
           <el-option
             v-for="(kv, kvIndex) in this.NodeVersions"
@@ -40,7 +44,11 @@
           :disabled="readOnly"
           clearable
           :transfer="true"
-          @on-change="onPackageChange"
+          @input="
+            (value) => {
+              onChange('Package', value);
+            }
+          "
         >
           <el-option
             v-for="(kv, kvIndex) in this.Packages"
@@ -50,19 +58,6 @@
           >
           </el-option>
         </el-select>
-      </div>
-      <div class="panelRow">
-        <div>{{ i18n["BuildScript"] }}：</div>
-        <el-input
-          style="width: 90%; font-size: 12px"
-          :disabled="readOnly"
-          :value="model.BuildScript"
-          @input="
-            (value) => {
-              onChange('BuildScript', value);
-            }
-          "
-        />
       </div>
       <div class="panelRow">
         <div>{{ i18n["PackagePath"] }}：</div>
@@ -130,6 +125,7 @@ export default {
       }
     },
     onPackageChange(event) {
+      console.log("onPackageChange:" + event);
       var items = this.Packages.filter((o) => o.key == event);
       if (items && items.length > 0) {
         onChange("Package", value);
