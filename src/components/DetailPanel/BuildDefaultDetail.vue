@@ -91,16 +91,9 @@ export default {
     },
   },
   methods: {
-    onMachineChange(event) {
-      var items = this.Machines.filter((o) => o.key == event);
-      if (items && items.length > 0) {
-        onChange("MachineId", value);
-        console.log(items[0].value);
-      } else {
-        onChange("MachineId", -1);
-      }
+    onScriptChange(newValue) {
+      this.onChange("BuildScript", newValue);
     },
-    onScriptChange(newValue) {},
   },
 };
 </script>

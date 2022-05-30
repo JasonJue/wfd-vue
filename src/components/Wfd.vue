@@ -152,7 +152,7 @@ export default {
         if (this.graph) {
           this.graph.changeData(this.initShape(newData));
           this.graph.setMode(this.mode);
-          this.graph.emit("canvas:click");
+          //this.graph.emit("canvas:click");
           if (this.cmdPlugin) {
             this.cmdPlugin.initPlugin(this.graph);
           }

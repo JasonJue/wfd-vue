@@ -55,9 +55,9 @@
     />
     <el-dialog title="查看流程图" :visible.sync="modalVisible" width="60%">
       <wfd-vue
-        ref="wfd"
-        :data="demoData1"
-        :height="300"
+        ref="wfdView"
+        :data.sync="demoData1"
+        :height="600"
         :Machines="Machines"
         :Packages="Packages"
         :JDKVersions="JDKVersions"
@@ -65,7 +65,7 @@
         :MavenVersions="MavenVersions"
         :DockerVersions="DockerVersions"
         :NodeVersions="NodeVersions"
-        isView
+        :isView="true"
       />
     </el-dialog>
   </div>
@@ -423,6 +423,7 @@ export default {
       const page = this.$refs["wfd"];
       var data = page.SaveData();
       var editData = data;
+      const wfdViewPage = this.$refs["wfdView"];
       this.demoData1 = editData;
       this.modalVisible = true;
     },
