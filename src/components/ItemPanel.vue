@@ -8,7 +8,7 @@
           style="width: 42px; height: 42px"
         />
         <div>{{ i18n["startEvent"] }}</div>
-        <img
+        <!-- <img
           data-item="{clazz:'timerStart',size:'30*30',label:''}"
           :src="require('../assets/flow/timer-start.svg')"
           style="width: 42px; height: 42px"
@@ -25,10 +25,10 @@
           :src="require('../assets/flow/signal-start.svg')"
           style="width: 42px; height: 42px"
         />
-        <div>{{ i18n["signalEvent"] }}</div>
+        <div>{{ i18n["signalEvent"] }}</div> -->
       </el-collapse-item>
       <el-collapse-item :title="i18n['task']" name="2">
-        <img
+        <!-- <img
           :data-item="userTaskData"
           :src="require('../assets/flow/user-task.svg')"
           style="width: 80px; height: 44px"
@@ -41,12 +41,6 @@
         />
         <div>{{ i18n["scriptTask"] }}</div>
         <img
-          :data-item="javaTaskData"
-          :src="require('../assets/flow/java-task.svg')"
-          style="width: 80px; height: 44px"
-        />
-        <div>{{ i18n["javaTask"] }}</div>
-        <img
           :data-item="mailTaskData"
           :src="require('../assets/flow/mail-task.svg')"
           style="width: 80px; height: 44px"
@@ -57,7 +51,7 @@
           :src="require('../assets/flow/receive-task.svg')"
           style="width: 80px; height: 44px"
         />
-        <div>{{ i18n["receiveTask"] }}</div>
+        <div>{{ i18n["receiveTask"] }}</div> -->
         <img
           :data-item="nodeTaskData"
           :src="require('../assets/flow/node-task.svg')"
@@ -72,10 +66,16 @@
         <div>{{ i18n["javaTask"] }}</div>
         <img
           :data-item="androidTaskData"
-          :src="require('../assets/flow/android-task.svg')"
+          :src="require('../assets/flow/git-task.svg')"
           style="width: 80px; height: 44px"
         />
         <div>{{ i18n["androidTask"] }}</div>
+        <img
+          :data-item="gitTaskData"
+          :src="require('../assets/flow/git-task.svg')"
+          style="width: 80px; height: 44px"
+        />
+        <div>{{ i18n["gitTask"] }}</div>
         <img
           :data-item="dockerTaskData"
           :src="require('../assets/flow/docker-task.svg')"
@@ -85,6 +85,12 @@
       </el-collapse-item>
       <el-collapse-item :title="i18n['gateway']" name="3">
         <img
+          :data-item="dockerTaskData"
+          :src="require('../assets/flow/docker-task.svg')"
+          style="width: 80px; height: 44px"
+        />
+        <div>{{ i18n["dockerTask"] }}</div>
+        <!-- <img
           data-item="{clazz:'exclusiveGateway',size:'40*40',label:''}"
           :src="require('../assets/flow/exclusive-gateway.svg')"
           style="width: 48px; height: 48px"
@@ -101,7 +107,7 @@
           :src="require('../assets/flow/inclusive-gateway.svg')"
           style="width: 48px; height: 48px"
         />
-        <div>{{ i18n["inclusiveGateway"] }}</div>
+        <div>{{ i18n["inclusiveGateway"] }}</div> -->
       </el-collapse-item>
       <el-collapse-item :title="i18n['catch']" name="4">
         <img
@@ -152,8 +158,6 @@ export default {
         "{clazz:'scriptTask',size:'80*44',label:'" +
         this.i18n["scriptTask"] +
         "'}",
-      javaTaskData:
-        "{clazz:'javaTask',size:'80*44',label:'" + this.i18n["javaTask"] + "'}",
       mailTaskData:
         "{clazz:'mailTask',size:'80*44',label:'" + this.i18n["mailTask"] + "'}",
       receiveTaskData:
@@ -172,6 +176,10 @@ export default {
         "{clazz:'androidTask',size:'120*44',label:'" +
         this.i18n["androidTask"] +
         "',MachineId: '1', WorkDirectory: '工作目录', JDKVersion: '1',  MavenVersion: '1',  Package: '1',  BuildScript: '',  PackagePath: '包目录'}",
+      gitTaskData:
+        "{clazz:'gitTask',size:'120*44',label:'" +
+        this.i18n["gitTask"] +
+        "',MachineId: '1', WorkDirectory: '工作目录', branch: '1',  BuildScript: ''}",
       dockerTaskData:
         "{clazz:'dockerTask',size:'80*44',label:'" +
         this.i18n["dockerTask"] +

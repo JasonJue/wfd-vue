@@ -1,47 +1,17 @@
 <template>
-  <div id="app">
-    <el-button
-      size="small"
-      style="float: right; margin-top: 6px; margin-right: 6px"
-      @click="
-        () => {
-          this.$refs['wfd'].graph.saveXML();
-        }
-      "
-      >导出XML</el-button
-    >
-    <el-button
-      size="small"
-      style="float: right; margin-top: 6px; margin-right: 6px"
-      @click="
-        () => {
-          this.$refs['wfd'].graph.saveImg();
-        }
-      "
-      >导出图片</el-button
-    >
-    <el-button
-      size="small"
-      style="float: right; margin-top: 6px; margin-right: 6px"
-      @click="
-        () => {
-          this.modalVisible = true;
-        }
-      "
-      >查看流程图</el-button
-    >
-
-    <el-button
-      size="small"
-      style="float: right; margin-top: 6px; margin-right: 6px"
-      @click="SaveData"
-      >保存</el-button
-    >
+  <Modal
+    title="查看流程图"
+    :mask-closable="false"
+    :closable="false"
+    :mask="mask"
+    v-model="show"
+    width="90%"
+    class-name="vertical-center-modal"
+  >
     <wfd-vue
       ref="wfd"
-      :data="demoData"
-      :height="600"
-      :width="800"
+      :mode="'edit'"
+      :data.sync="demoData"
       :users="candidateUsers"
       :groups="candidateGroups"
       :categorys="categorys"
@@ -53,58 +23,23 @@
       :MavenVersions="MavenVersions"
       :DockerVersions="DockerVersions"
       :NodeVersions="NodeVersions"
-      :Branchs="Branchs"
     />
-    <!-- <VolBox
-      :model.sync="show"
-      :title="title"
-      :height="height"
-      :width="width"
-      :padding="10"
-      id="pipelineEditView"
-    >
-      <!-- <wfd-vue
-        ref="wfdView"
-        :data.sync="demoData1"
-        :height="600"
-        :Machines="Machines"
-        :Packages="Packages"
-        :JDKVersions="JDKVersions"
-        :AndroidSDKVersions="AndroidSDKVersions"
-        :MavenVersions="MavenVersions"
-        :DockerVersions="DockerVersions"
-        :NodeVersions="NodeVersions"
-        :isView="true"
-      /> -->
-    </VolBox> -->
-    <!-- <el-dialog title="查看流程图" :visible.sync="modalVisible" width="60%">
-      <wfd-vue
-        ref="wfdView"
-        :data.sync="demoData1"
-        :height="600"
-        :Machines="Machines"
-        :Packages="Packages"
-        :JDKVersions="JDKVersions"
-        :AndroidSDKVersions="AndroidSDKVersions"
-        :MavenVersions="MavenVersions"
-        :DockerVersions="DockerVersions"
-        :NodeVersions="NodeVersions"
-        :isView="true"
-      />
-    </el-dialog> -->
-  </div>
+  </Modal>
 </template>
 
 <script>
 import WfdVue from "../src/components/Wfd";
-import VolBox from "../example/VolBox.vue";
+
 export default {
   name: "app",
   components: {
     WfdVue,
-    VolBox,
   },
   props: {
+    mask: {
+      type: Boolean,
+      default: true,
+    },
     Machines: {
       type: Array,
       default: () => [
@@ -166,15 +101,6 @@ export default {
         { key: "6", value: "latest" },
       ],
     },
-    Branchs: {
-      type: Array,
-      default: () => [
-        { key: "1", value: "Android" },
-        { key: "2", value: "H5" },
-        { key: "3", value: "Java" },
-        { key: "4", value: "iOS" },
-      ],
-    },
     NodeVersions: {
       type: Array,
       default: () => [
@@ -189,9 +115,10 @@ export default {
       ],
     },
   },
+  created() {},
   data() {
     return {
-      modalVisible: false,
+      title: "流水线编辑框",
       lang: "zh",
       demoData: {
         nodes: [
@@ -313,125 +240,48 @@ export default {
           },
         ],
       },
-      demoData1: {
-        nodes: [
-          { id: "startNode1", x: 50, y: 200, label: "", clazz: "start" },
-          { id: "startNode2", x: 50, y: 320, label: "", clazz: "timerStart" },
+      show: false,
+      height: 630,
+      width: 900,
+      size: "800px",
+      selectedNode: {},
+      currentNodeHasChild: true,
+      selectdrawer: false,
+      editdrawer: false,
+      direction: "rtl",
+      tab: "pipeline",
+      readonly: true,
+      model: 1,
+      form: {
+        x: 50,
+        y: 55,
+        xstep: 120,
+        ystep: 70,
+        data: 2,
+        showArrow: true,
+        lineStyle: "default",
+        from: 0,
+        to: 0,
+      },
+      msg: "",
+      ConfigValue: {},
+      pipeLineFlowData: [],
+      MainData: {},
+      TaskEditMode: "Add",
+      PipelineStatus: [
+        { key: 1, value: "已建立" },
+        { key: 2, value: "运行中" },
+      ],
+      EnableDic: [
+        { key: 0, value: "否" },
+        { key: 1, value: "是" },
+      ],
+      ruleValidate: {
+        TaskName: [
           {
-            id: "taskNode1",
-            x: 200,
-            y: 200,
-            label: "主任审批",
-            clazz: "userTask",
-          },
-          {
-            id: "taskNode2",
-            x: 400,
-            y: 200,
-            label: "Node节点",
-            clazz: "nodeTask",
-            active: true,
-            MachineId: "1",
-            WorkDirectory: "工作目录",
-            NodeVersion: "1",
-            Package: "1",
-            BuildScript: "1123123",
-            PackagePath: "包目录",
-          },
-          {
-            id: "gatewayNode",
-            x: 400,
-            y: 320,
-            label: "金额大于1000",
-            clazz: "gateway",
-            active: true,
-          },
-          {
-            id: "taskNode3",
-            x: 400,
-            y: 450,
-            label: "董事长审批",
-            clazz: "receiveTask",
-          },
-          {
-            id: "catchNode1",
-            x: 600,
-            y: 200,
-            label: "等待结束",
-            clazz: "signalCatch",
-          },
-          { id: "endNode", x: 600, y: 320, label: "", clazz: "end" },
-        ],
-        edges: [
-          {
-            source: "startNode1",
-            target: "taskNode1",
-            sourceAnchor: 1,
-            targetAnchor: 3,
-            clazz: "flow",
-          },
-          {
-            source: "startNode2",
-            target: "gatewayNode",
-            sourceAnchor: 1,
-            targetAnchor: 3,
-            clazz: "flow",
-          },
-          {
-            source: "taskNode1",
-            target: "catchNode1",
-            sourceAnchor: 0,
-            targetAnchor: 0,
-            clazz: "flow",
-          },
-          {
-            source: "taskNode1",
-            target: "taskNode2",
-            sourceAnchor: 1,
-            targetAnchor: 3,
-            clazz: "flow",
-          },
-          {
-            source: "taskNode2",
-            target: "gatewayNode",
-            sourceAnchor: 1,
-            targetAnchor: 0,
-            clazz: "flow",
-          },
-          {
-            source: "taskNode2",
-            target: "taskNode1",
-            sourceAnchor: 2,
-            targetAnchor: 2,
-            clazz: "flow",
-          },
-          {
-            source: "gatewayNode",
-            target: "taskNode3",
-            sourceAnchor: 2,
-            targetAnchor: 0,
-            clazz: "flow",
-          },
-          {
-            source: "gatewayNode",
-            target: "endNode",
-            sourceAnchor: 1,
-            targetAnchor: 2,
-            clazz: "flow",
-          },
-          {
-            source: "taskNode3",
-            target: "endNode",
-            sourceAnchor: 1,
-            targetAnchor: 1,
-            clazz: "flow",
-          },
-          {
-            source: "catchNode1",
-            target: "endNode",
-            sourceAnchor: 1,
-            targetAnchor: 0,
-            clazz: "flow",
+            required: true,
+            message: "任务名称不能为空",
+            trigger: "blur",
           },
         ],
       },
@@ -450,31 +300,67 @@ export default {
         { id: "2", name: "Subsidy" },
         { id: "3", name: "Maintain" },
       ],
+      lang: "zh",
     };
   },
-  mounted() {},
+  watch: {},
   methods: {
-    SaveData() {
-      console.log("SaveData");
-      const page = this.$refs["wfd"];
-      var data = page.SaveData();
-      var editData = data;
-      const wfdViewPage = this.$refs["wfdView"];
-      this.demoData1 = editData;
-      page.render();
-      this.modalVisible = true;
+    showView(_model, data) {
+      console.log("showView");
+      this.resetData();
+      this.model = _model;
+      this.height = document.documentElement.clientHeight * 0.7;
+      this.width = document.documentElement.clientWidth * 0.9;
+      this.show = true;
+      if (this.dataUtil.common.enumViewModel.Add == this.model) {
+        this.title = "流水线-新增";
+        let userId = this.$store.getters.getUserInfo().userId;
+        this.pipeLineFlowData = JSON.parse(JSON.stringify(sample.nodes));
+        data = {
+          Id: 0,
+          Name: "",
+          Status: 1,
+          CreateUser: userId,
+          UpdateUser: userId,
+        };
+        this.readonly = false;
+      } else {
+        if (this.dataUtil.common.enumViewModel.Edit == this.model) {
+          this.title = "流水线-编辑";
+          this.readonly = false;
+        } else {
+          this.title = "流水线-查看";
+          this.readonly = true;
+        }
+        if (
+          data.PipelineFlow == "" ||
+          data.PipelineFlow == "1" ||
+          data.PipelineFlow == undefined
+        ) {
+          this.pipeLineFlowData = JSON.parse(JSON.stringify(sample.nodes));
+        } else if (typeof data.PipelineFlow == "string") {
+          this.pipeLineFlowData = JSON.parse(data.PipelineFlow);
+        }
+      }
+      this.MainData = data;
+      this.$refs["wfd"].render();
     },
   },
+  mounted() {},
 };
 </script>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<style lang="less" scoped>
+.vol-tabs {
+  background: white;
+}
+.tabs1-header {
+  display: flex;
+  text-align: right;
+  padding: 10px;
+  .btn-group {
+    flex: 1;
+  }
 }
 </style>
 
@@ -519,10 +405,5 @@ export default {
   .header {
     color: white;
   }
-}
-</style>
-<style scoped>
-.view-model-content >>> .el-scrollbar > .el-scrollbar__wrap {
-  overflow-x: hidden;
 }
 </style>

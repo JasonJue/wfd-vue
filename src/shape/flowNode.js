@@ -437,6 +437,20 @@ export default function(G6) {
 	    }
 	  }),
 	}, 'task-node');
+	G6.registerNode('git-task-node', {
+	  options:  G6.Util.deepMix({},taskDefaultOptions,{
+	    icon: require('../assets/icons/flow/icon_git.svg'),
+	    style: {
+	      fill: '#AEE9E2',
+	      stroke: '#2FC2B0',
+	    },
+	    stateStyles: {
+	      selected: {
+	        fill: '#7ED7CD',
+	      },
+	    }
+	  }),
+	}, 'task-node');
 	G6.registerNode('docker-task-node', {
 	  options:  G6.Util.deepMix({},taskDefaultOptions,{
 	    icon: require('../assets/icons/flow/icon_docker.svg'),

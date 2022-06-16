@@ -103,6 +103,14 @@
       :JDKVersions="JDKVersions"
       :AndroidSDKVersions="AndroidSDKVersions"
     />
+    <GitTaskDetail
+      v-else-if="model.clazz === 'gitTask'"
+      :model="model"
+      :onChange="onChange"
+      :readOnly="readOnly"
+      :Machines="Machines"
+      :Branchs="Branchs"
+    />
     <JavaTaskDetail
       v-else-if="model.clazz === 'javaTask'"
       :model="model"
@@ -139,6 +147,7 @@ import ProcessDetail from "./ProcessDetail";
 import NodeTaskDetail from "./NodeTaskDetail";
 import JavaTaskDetail from "./JavaTaskDetail";
 import AndroidTaskDetail from "./AndroidTaskDetail";
+import GitTaskDetail from "./GitTaskDetail";
 import DockerTaskDetail from "./DockerTaskDetail";
 export default {
   inject: ["i18n"],
@@ -159,6 +168,7 @@ export default {
     JavaTaskDetail,
     AndroidTaskDetail,
     DockerTaskDetail,
+    GitTaskDetail,
   },
   props: {
     height: {
@@ -193,6 +203,14 @@ export default {
         { key: "4", value: "JDK 1.9" },
         { key: "5", value: "OPENJDK 10" },
         { key: "6", value: "OPENJDK 11" },
+      ],
+    },
+    Branchs: {
+      type: Array,
+      default: () => [
+        { key: "1", value: "Android" },
+        { key: "2", value: "H5" },
+        { key: "2", value: "Java" },
       ],
     },
     AndroidSDKVersions: {

@@ -30,6 +30,7 @@
         :MavenVersions="MavenVersions"
         :DockerVersions="DockerVersions"
         :NodeVersions="NodeVersions"
+        :Branchs="Branchs"
         :onChange="
           (key, val) => {
             onItemCfgChange(key, val);
@@ -120,6 +121,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    Branchs: {
+      type: Array,
+      default: () => [],
+    },
     DockerVersions: {
       type: Array,
       default: () => [],
@@ -152,7 +157,7 @@ export default {
         if (this.graph) {
           this.graph.changeData(this.initShape(newData));
           this.graph.setMode(this.mode);
-          //this.graph.emit("canvas:click");
+          this.graph.emit("canvas:click");
           if (this.cmdPlugin) {
             this.cmdPlugin.initPlugin(this.graph);
           }
@@ -164,6 +169,66 @@ export default {
     },
   },
   methods: {
+    render() {
+      console.log("wfd render");
+      console.log("wfd data：" + JSON.stringify(this.data));
+      let plugins = [];
+      console.log("wfd height" + this.height);
+      if (!this.isView) {
+        console.log("wfd isView" + this.isView);
+        this.cmdPlugin = new Command();
+        const toolbar = new Toolbar({ container: this.$refs["toolbar"].$el });
+        const addItemPanel = new AddItemPanel({
+          container: this.$refs["addItemPanel"].$el,
+        });
+        const canvasPanel = new CanvasPanel({
+          container: this.$refs["canvas"],
+        });
+        plugins = [this.cmdPlugin, toolbar, addItemPanel, canvasPanel];
+      }
+      const width = this.$refs["canvas"].offsetWidth;
+      console.log("wfd width:" + width);
+      this.graph = new G6.Graph({
+        plugins: plugins,
+        container: this.$refs["canvas"],
+        height: this.height,
+        width: width,
+        modes: {
+          default: ["drag-canvas", "clickSelected"],
+          view: [],
+          edit: [
+            "drag-canvas",
+            "hoverNodeActived",
+            "hoverAnchorActived",
+            "dragNode",
+            "dragEdge",
+            "dragPanelItemAddNode",
+            "clickSelected",
+            "deleteItem",
+            "itemAlign",
+            "dragPoint",
+            "brush-select",
+          ],
+        },
+        defaultEdge: {
+          shape: "flow-polyline-round",
+        },
+      });
+      this.graph.saveXML = (createFile = true) =>
+        exportXML(this.graph.save(), this.processModel, createFile);
+      this.graph.saveImg = (createFile = true) =>
+        exportImg(this.$refs["canvas"], this.processModel.name, createFile);
+      if (this.isView) this.graph.setMode("view");
+      else this.graph.setMode(this.mode);
+      console.log("wfd mode" + this.mode);
+      this.graph.data(this.initShape(this.data));
+      this.graph.render();
+      if (this.isView && this.data && this.data.nodes) {
+        this.graph.fitView(5);
+      }
+      this.initEvents();
+      console.log("wfd initEvents");
+    },
     initShape(data) {
       if (data && data.nodes) {
         return {
@@ -263,55 +328,7 @@ export default {
     });
   },
   mounted() {
-    let plugins = [];
-    if (!this.isView) {
-      this.cmdPlugin = new Command();
-      const toolbar = new Toolbar({ container: this.$refs["toolbar"].$el });
-      const addItemPanel = new AddItemPanel({
-        container: this.$refs["addItemPanel"].$el,
-      });
-      const canvasPanel = new CanvasPanel({ container: this.$refs["canvas"] });
-      plugins = [this.cmdPlugin, toolbar, addItemPanel, canvasPanel];
-    }
-    const width = this.$refs["canvas"].offsetWidth;
-    this.graph = new G6.Graph({
-      plugins: plugins,
-      container: this.$refs["canvas"],
-      height: this.height,
-      width: width,
-      modes: {
-        default: ["drag-canvas", "clickSelected"],
-        view: [],
-        edit: [
-          "drag-canvas",
-          "hoverNodeActived",
-          "hoverAnchorActived",
-          "dragNode",
-          "dragEdge",
-          "dragPanelItemAddNode",
-          "clickSelected",
-          "deleteItem",
-          "itemAlign",
-          "dragPoint",
-          "brush-select",
-        ],
-      },
-      defaultEdge: {
-        shape: "flow-polyline-round",
-      },
-    });
-    this.graph.saveXML = (createFile = true) =>
-      exportXML(this.graph.save(), this.processModel, createFile);
-    this.graph.saveImg = (createFile = true) =>
-      exportImg(this.$refs["canvas"], this.processModel.name, createFile);
-    if (this.isView) this.graph.setMode("view");
-    else this.graph.setMode(this.mode);
-    this.graph.data(this.initShape(this.data));
-    this.graph.render();
-    if (this.isView && this.data && this.data.nodes) {
-      this.graph.fitView(5);
-    }
-    this.initEvents();
+    this.render();
   },
 };
 </script>

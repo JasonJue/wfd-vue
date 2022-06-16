@@ -85,6 +85,13 @@ export function exportXML(json, canvas, createFile = true) {
         }
         processXML += `${tab(4)}<androidTask id="${node.id}" name="${node.label}" ${android}></androidTask>\n`;
         break;
+      } case 'gitTask': {
+        let git = "";
+        if (node.git) {
+          git = `flowable:class="${node.git}"`;
+        }
+        processXML += `${tab(4)}<gitTask id="${node.id}" name="${node.label}" ${git}></gitTask>\n`;
+        break;
       }
       case 'dockerTask': {
         let docker = "";
